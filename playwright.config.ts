@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     actionTimeout: 0,
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5173', // Replace with your server's URL if different
     trace: 'on-first-retry',
     headless: !!process.env.CI,
   },
