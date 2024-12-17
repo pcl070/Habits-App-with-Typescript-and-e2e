@@ -82,6 +82,18 @@ Ensure the development server is running:
 ```
 npx playwright test
 ```
+## Important Note:
+For successful execution of Playwright tests, ensure that the baseURL in playwright.config.ts matches your development server URL. If you're running the app locally, the default is usually:
+
+```
+use: {
+  actionTimeout: 0,
+  baseURL: 'http://localhost:5173', // Replace with your server's URL if different
+  trace: 'on-first-retry',
+  headless: !!process.env.CI,
+},
+```
+Make sure to update the baseURL to reflect your local server's address (e.g., http://localhost:3000 or any custom port you're using). Incorrect configuration may result in failed E2E tests.
 ## Contributing
 Feel free to fork this project and make your modifications. Contributions are welcome!
 
