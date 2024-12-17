@@ -8,10 +8,11 @@ This project is a Habit Tracker web application built using Vue 3 and Pinia for 
 - Track Habit Streaks: See streaks for consecutive habit completions.
 - Pagination: View habits in a paginated format for easy navigation when managing a large list of habits.
 ### Date Management
-- Calendar Integration: Select dates via an interactive calendar, where:
-* Dates in the future are disabled.
-* URLs cannot load invalid or future dates (e.g., /day/9999-12-12). Invalid dates redirect to today's date.
-- Progress Visualization: A circular progress indicator shows the completion rate of habits for any given day.
+* **Calendar Integration**: Select dates via an interactive calendar, where:
+  * Dates in the future are disabled.
+  * URLs cannot load invalid or future dates (e.g., `/day/9999-12-12`). Invalid dates redirect to today's date.
+* **Progress Visualization**: A circular progress indicator shows the completion rate of habits for any given day.
+
 ### State Management and Persistence
 - Local Storage: All data (habits, categories, completed habits, settings) persists across sessions using localStorage.
 - Pinia Store: Manage app state (habits, completed days, categories, etc.) efficiently.
