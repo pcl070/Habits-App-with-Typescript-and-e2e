@@ -1,17 +1,22 @@
 <template>
-  <div class="habit-item">
+  <div class="habit-item" data-testid="habit-item">
     <!-- Left-aligned content wrapper -->
-    <div class="habit-content">
+    <div class="habit-content" data-testid="habit-content">
       <!-- Custom Checkbox Wrapper -->
-      <div class="checkbox-wrapper">
+      <div class="checkbox-wrapper" data-testid="checkbox-wrapper">
         <input
           type="checkbox"
           class="check"
           :checked="isCompleted"
           @change="toggleCompletion"
           :id="`habit-${habit.id}`"
+          data-testid="habit-checkbox"
         />
-        <label :for="`habit-${habit.id}`" class="label">
+        <label
+          :for="`habit-${habit.id}`"
+          class="label"
+          data-testid="habit-label"
+        >
           <svg width="45" height="45" viewBox="0 0 95 95">
             <rect x="30" y="20" width="50" height="50" fill="none"></rect>
             <g transform="translate(0,-952.36222)">
@@ -24,16 +29,18 @@
               ></path>
             </g>
           </svg>
-          <span>{{ habit.name }}</span>
+          <span data-testid="habit-name">{{ habit.name }}</span>
         </label>
       </div>
 
       <!-- Streak Display -->
-      <span v-if="streak > 2" class="streak">🔥 {{ streak }} days</span>
+      <span v-if="streak > 2" class="streak" data-testid="habit-streak"
+        >🔥 {{ streak }} days</span
+      >
     </div>
 
     <!-- Delete Button aligned to the right -->
-    <button class="btn" @click="deleteHabit">
+    <button class="btn" @click="deleteHabit" data-testid="delete-habit-btn">
       <svg
         viewBox="0 0 15 17.5"
         height="17.5"
@@ -76,10 +83,16 @@ export default defineComponent({
     },
   },
   methods: {
-    toggleCompletion(): void {
+    toggleCompletion(this: {
+      $emit: (event: string, payload: number) => void;
+      habit: Habit;
+    }): void {
       this.$emit('toggle-completion', this.habit.id);
     },
-    deleteHabit(): void {
+    deleteHabit(this: {
+      $emit: (event: string, payload: number) => void;
+      habit: Habit;
+    }): void {
       this.$emit('delete-habit', this.habit.id);
     },
   },
@@ -142,6 +155,10 @@ export default defineComponent({
   transition: 0.5s stroke-dashoffset;
 }
 
+.btn:hover > .icon path {
+  fill: rgb(168 7 7);
+}
+
 .checkbox-wrapper .check:checked + label svg g path {
   stroke-dashoffset: 0;
   opacity: 1;
@@ -188,10 +205,6 @@ export default defineComponent({
 
 .btn:hover > .icon {
   transform: scale(1.5);
-}
-
-.btn:hover > .icon path {
-  fill: rgb(168 7 7);
 }
 
 .btn:hover::after {

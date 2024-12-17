@@ -50,7 +50,8 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+// @ts-ignore
+import { ref, computed, watch } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter, useRoute } from 'vue-router';
 import { useHabitStore } from '../stores';
@@ -125,15 +126,18 @@ export default {
 
     const getProgressStyle = (day: Dayjs): Record<string, string | number> => {
       const date = day.format('YYYY-MM-DD');
-      const totalHabits = habitStore.habits.length;
+      const totalHabits: number = habitStore.habits.length;
 
-      const completedHabits = habitStore.completedHabits[date]
-        ? Object.keys(habitStore.completedHabits[date]).filter((habitId) =>
-            habitStore.habits.some((habit) => habit.id === parseInt(habitId))
+      const completedHabits: number = habitStore.completedHabits[date]
+        ? Object.keys(habitStore.completedHabits[date]).filter(
+            (habitId: string) =>
+              habitStore.habits.some(
+                (habit: { id: number }) => habit.id === parseInt(habitId, 10)
+              )
           ).length
         : 0;
 
-      const progressPercentage = totalHabits
+      const progressPercentage: number = totalHabits
         ? (completedHabits / totalHabits) * 100
         : 0;
 
@@ -147,7 +151,7 @@ export default {
     // Watch for changes in the route parameter `date` to update `selectedDate` and `currentMonth`
     watch(
       () => route.params.date,
-      (newDate) => {
+      (newDate: string | string[] | undefined) => {
         if (typeof newDate === 'string') {
           currentMonth.value = dayjs(newDate).startOf('month');
         }

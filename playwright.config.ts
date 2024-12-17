@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { devices, defineConfig } from '@playwright/test';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -7,7 +7,7 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   testDir: './e2e',
   /* Maximum time one test can run for. */
-  timeout: process.env.CI ? 30_000 : 10_000,
+  timeout: process.env.CI ? 10_000 : 10_000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -78,4 +78,8 @@ const config: PlaywrightTestConfig = {
   },
 };
 
-export default config;
+export default defineConfig({
+  use: {
+    baseURL: 'http://localhost:5173',
+  },
+});

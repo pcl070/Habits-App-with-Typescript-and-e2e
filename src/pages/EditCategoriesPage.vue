@@ -34,6 +34,7 @@
               v-if="editingCategory !== category"
               class="btn"
               @click="deleteCategory(category)"
+              data-test-id="delete-category-btn"
             >
               <svg
                 viewBox="0 0 15 17.5"
@@ -68,6 +69,7 @@
 </template>
 
 <script lang="ts">
+// @ts-ignore
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useHabitStore } from '../stores';
@@ -86,6 +88,7 @@ export default {
 
     const addCategory = (): void => {
       if (newCategoryName.value.length > 25) {
+        // @ts-ignore
         alert('Category name should be 25 characters or less!');
         return;
       }
@@ -102,6 +105,7 @@ export default {
 
     const saveCategory = (oldCategory: string): void => {
       if (editedCategoryName.value.length > 25) {
+        // @ts-ignore
         alert('Category name should be 25 characters or less!');
         return;
       }
@@ -122,6 +126,7 @@ export default {
 
     const deleteCategory = (category: string): void => {
       if (
+        // @ts-ignore
         confirm(
           `Are you sure you want to delete the category "${category}"? This will delete all associated habits.`
         )

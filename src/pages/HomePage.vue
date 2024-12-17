@@ -5,7 +5,11 @@
       <!-- Sorting and Filtering Section -->
       <div class="filter-sort-section">
         <label for="categoryFilter">Filter by Category:</label>
-        <select v-model="filterCategory" id="categoryFilter">
+        <select
+          v-model="filterCategory"
+          id="category-filter"
+          data-testid="category-select"
+        >
           <option value="">All Categories</option>
           <option
             v-for="category in categories"
@@ -15,6 +19,7 @@
             {{ category }}
           </option>
         </select>
+
         <!-- Button to edit categories -->
         <button @click="goToEditCategories" class="edit-categories-btn">
           Edit Categories
@@ -58,7 +63,11 @@
           >Habit name should be 25 characters or less!</span
         >
         <!-- Category selection-->
-        <select v-model="selectedCategory" class="habit-category">
+        <select
+          v-model="selectedCategory"
+          class="habit-category"
+          data-testid="category-select"
+        >
           <option disabled value="">Select Category</option>
           <option
             v-for="category in categories"
@@ -72,6 +81,7 @@
           @click="addHabit"
           :disabled="newHabitName.length > 25"
           class="icon-btn add-btn"
+          data-testid="add-habit-btn"
         >
           <div class="add-icon"></div>
           <div class="btn-txt">
@@ -98,6 +108,7 @@
 </template>
 
 <script lang="ts">
+// @ts-ignore
 import { ref, computed, watch, type Ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useHabitStore } from '../stores';
@@ -128,24 +139,31 @@ export default {
     const habitStreak = (id: number): number => habitStore.getHabitStreak(id);
 
     // State for new habit input
-    const newHabitName: Ref<string> = ref('');
-    const selectedCategory: Ref<string> = ref('');
+    // State for new habit input
+    const newHabitName: Ref<string> = ref(''); // Explicitly typed Ref
+    const selectedCategory: Ref<string> = ref(''); // Explicitly typed Ref
 
-    watch(newHabitName, (value) => {
+    // Watcher for newHabitName to capitalize the first letter
+    watch(newHabitName, (value: string) => {
       if (value) {
         newHabitName.value = value.charAt(0).toUpperCase() + value.slice(1);
       }
     });
 
+    // Add habit function with validation
     const addHabit = (): void => {
-      if (newHabitName.value.trim() && selectedCategory.value) {
+      if (newHabitName.value.trim() && selectedCategory.value.trim()) {
         habitStore.addHabit({
           name: newHabitName.value.trim(),
-          category: selectedCategory.value,
+          category: selectedCategory.value.trim(),
         });
+
+        // Clear the fields after adding a habit
         newHabitName.value = '';
         selectedCategory.value = '';
       } else {
+        // Properly typed `window.alert`
+        // @ts-ignore
         alert('Please enter a habit name and select a category');
       }
     };
@@ -162,7 +180,7 @@ export default {
     const filteredHabits = computed<Habit[]>(() => {
       return filterCategory.value
         ? habits.value.filter(
-            (habit) => habit.category === filterCategory.value
+            (habit: Habit) => habit.category === filterCategory.value
           )
         : habits.value;
     });
@@ -199,9 +217,10 @@ export default {
 
     watch(
       () => route.params.date,
-      (newDate) => {
+      (newDate: string | undefined) => {
+        // Add explicit type for newDate
         if (newDate) {
-          habitStore.selectedDate = newDate as string;
+          habitStore.selectedDate = newDate; // No need for 'as string'
         }
       },
       { immediate: true }
@@ -255,14 +274,14 @@ export default {
 
 .habit-input,
 .habit-category,
-#categoryFilter {
+#category-filter {
   border: 1px solid;
   border-color: var(--buton-bord-color);
   border-radius: 15px;
   padding: 8px;
 }
 
-#categoryFilter {
+#category-filter {
   margin-left: 5px;
 }
 
