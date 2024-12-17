@@ -63,10 +63,8 @@ export default {
     const route = useRoute();
     const today: Dayjs = dayjs().startOf('day');
 
-    // Track the currently selected date
     const selectedDate = ref<string>(today.format('YYYY-MM-DD'));
 
-    // Initialize `currentMonth` to match the selected date if available, or fallback to today's month
     const currentMonth = ref<Dayjs>(
       dayjs(
         typeof route.params.date === 'string' ? route.params.date : today
@@ -149,10 +147,12 @@ export default {
     };
 
     // Watch for changes in the route parameter `date` to update `selectedDate` and `currentMonth`
+
     watch(
       () => route.params.date,
       (newDate: string | string[] | undefined) => {
         if (typeof newDate === 'string') {
+          selectedDate.value = newDate;
           currentMonth.value = dayjs(newDate).startOf('month');
         }
       },
@@ -243,9 +243,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* Add transition for background change */
-  transition: background 0.3s ease; /* This line animates the progress */
+  transition: background 0.3s ease;
   border-radius: 50%;
   background: #e0e0e0;
   width: 40px;
@@ -259,13 +257,10 @@ export default {
   z-index: 1;
 }
 
-/* Add style for the selected day with an inner border effect */
 .selected-day .progress-circle {
   transition: 0.3s;
-  box-shadow: inset 0 0 0 2px rgb(125 125 228); /* Creates an inner blue border */
+  box-shadow: inset 0 0 0 2px rgb(125 125 228);
 }
-
-/* Mobile display styles */
 
 @media (width <= 700px) {
   .calendar {

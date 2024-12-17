@@ -1,8 +1,6 @@
 <template>
   <div class="habit-item" data-testid="habit-item">
-    <!-- Left-aligned content wrapper -->
     <div class="habit-content" data-testid="habit-content">
-      <!-- Custom Checkbox Wrapper -->
       <div class="checkbox-wrapper" data-testid="checkbox-wrapper">
         <input
           type="checkbox"
@@ -33,13 +31,11 @@
         </label>
       </div>
 
-      <!-- Streak Display -->
       <span v-if="streak > 2" class="streak" data-testid="habit-streak"
         >🔥 {{ streak }} days</span
       >
     </div>
 
-    <!-- Delete Button aligned to the right -->
     <button class="btn" @click="deleteHabit" data-testid="delete-habit-btn">
       <svg
         viewBox="0 0 15 17.5"
@@ -59,6 +55,7 @@
 </template>
 
 <script lang="ts">
+// @ts-ignore
 import { defineComponent, PropType } from 'vue';
 
 interface Habit {

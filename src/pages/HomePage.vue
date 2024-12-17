@@ -2,7 +2,6 @@
   <div class="homepage">
     <Calendar />
     <div>
-      <!-- Sorting and Filtering Section -->
       <div class="filter-sort-section">
         <label for="categoryFilter">Filter by Category:</label>
         <select
@@ -20,13 +19,11 @@
           </option>
         </select>
 
-        <!-- Button to edit categories -->
         <button @click="goToEditCategories" class="edit-categories-btn">
           Edit Categories
         </button>
       </div>
 
-      <!-- Habit List with Pagination -->
       <div class="habit-list">
         <HabitItem
           v-for="habit in paginatedHabits"
@@ -39,7 +36,6 @@
         />
       </div>
 
-      <!-- Pagination Controls -->
       <div v-if="totalPages > 1" class="pagination">
         <button @click="prevPage" :disabled="currentPage === 1">
           Previous
@@ -50,7 +46,6 @@
         </button>
       </div>
 
-      <!-- Add habit section -->
       <div class="add-habit-section">
         <input
           v-model="newHabitName"
@@ -62,7 +57,7 @@
           :class="{ 'warning-text': true, visible: newHabitName.length > 25 }"
           >Habit name should be 25 characters or less!</span
         >
-        <!-- Category selection-->
+
         <select
           v-model="selectedCategory"
           class="habit-category"
@@ -139,18 +134,15 @@ export default {
     const habitStreak = (id: number): number => habitStore.getHabitStreak(id);
 
     // State for new habit input
-    // State for new habit input
-    const newHabitName: Ref<string> = ref(''); // Explicitly typed Ref
-    const selectedCategory: Ref<string> = ref(''); // Explicitly typed Ref
+    const newHabitName: Ref<string> = ref('');
+    const selectedCategory: Ref<string> = ref('');
 
-    // Watcher for newHabitName to capitalize the first letter
     watch(newHabitName, (value: string) => {
       if (value) {
         newHabitName.value = value.charAt(0).toUpperCase() + value.slice(1);
       }
     });
 
-    // Add habit function with validation
     const addHabit = (): void => {
       if (newHabitName.value.trim() && selectedCategory.value.trim()) {
         habitStore.addHabit({
@@ -162,7 +154,6 @@ export default {
         newHabitName.value = '';
         selectedCategory.value = '';
       } else {
-        // Properly typed `window.alert`
         // @ts-ignore
         alert('Please enter a habit name and select a category');
       }
@@ -218,9 +209,8 @@ export default {
     watch(
       () => route.params.date,
       (newDate: string | undefined) => {
-        // Add explicit type for newDate
         if (newDate) {
-          habitStore.selectedDate = newDate; // No need for 'as string'
+          habitStore.selectedDate = newDate;
         }
       },
       { immediate: true }

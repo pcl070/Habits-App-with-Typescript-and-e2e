@@ -2,20 +2,17 @@
   <div class="edit-categories-page">
     <h2>Edit Categories</h2>
     <div class="frame">
-      <!-- Add new category -->
       <div class="add-category-section">
         <input v-model="newCategoryName" placeholder="Enter new category" />
         <button @click="addCategory">Add Category</button>
       </div>
 
-      <!-- List of existing categories with edit and delete options -->
       <ul class="categories-list">
         <li
           v-for="category in categories"
           :key="category"
           class="category-item"
         >
-          <!-- Display category name or an input field based on editing state -->
           <div class="category-content">
             <span v-if="editingCategory !== category">{{ category }}</span>
             <input
@@ -80,7 +77,6 @@ export default {
     const router = useRouter();
     const habitStore = useHabitStore();
 
-    // Reactive state with TypeScript annotations
     const categories = computed<string[]>(() => habitStore.categories);
     const newCategoryName = ref<string>('');
     const editingCategory = ref<string | null>(null);

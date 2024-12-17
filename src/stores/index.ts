@@ -99,21 +99,27 @@ export const useHabitStore = defineStore('habitStore', {
       const categoryIndex = this.categories.indexOf(oldCategory);
       if (categoryIndex !== -1) {
         this.categories.splice(categoryIndex, 1, newCategory);
-        this.habits = this.habits.map((habit) =>
+
+        this.habits = this.habits.map((habit: Habit) =>
           habit.category === oldCategory
             ? { ...habit, category: newCategory }
             : habit
         );
+
+        // Save updated data to localStorage
         // @ts-ignore
         localStorage.setItem('habits', JSON.stringify(this.habits));
         // @ts-ignore
         localStorage.setItem('categories', JSON.stringify(this.categories));
       }
     },
-
     deleteCategory(category: string): void {
-      this.categories = this.categories.filter((cat) => cat !== category);
-      this.habits = this.habits.filter((habit) => habit.category !== category);
+      this.categories = this.categories.filter(
+        (cat: string) => cat !== category
+      );
+      this.habits = this.habits.filter(
+        (habit: Habit) => habit.category !== category
+      );
       // @ts-ignore
       localStorage.setItem('habits', JSON.stringify(this.habits));
       // @ts-ignore
@@ -139,7 +145,7 @@ export const useHabitStore = defineStore('habitStore', {
       this.loadFromLocalStorage();
       watch(
         () => this.habits,
-        (newHabits) => {
+        (newHabits: Habit[]) => {
           // @ts-ignore
           localStorage.setItem('habits', JSON.stringify(newHabits));
         },
@@ -147,7 +153,7 @@ export const useHabitStore = defineStore('habitStore', {
       );
       watch(
         () => this.completedHabits,
-        (newCompletedHabits) => {
+        (newCompletedHabits: Record<string, Record<number, boolean>>) => {
           // @ts-ignore
           localStorage.setItem(
             'completedHabits',
@@ -158,7 +164,7 @@ export const useHabitStore = defineStore('habitStore', {
       );
       watch(
         () => this.categories,
-        (newCategories) => {
+        (newCategories: string[]) => {
           // @ts-ignore
           localStorage.setItem('categories', JSON.stringify(newCategories));
         },
